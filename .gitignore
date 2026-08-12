@@ -83,10 +83,10 @@ last_run_info.txt
 # ============================================================================
 # Data Files (Large CSVs)
 # ============================================================================
-# Uncomment these if you don't want to commit large datasets
-# *.csv
-# ev_charging_station_data.csv
-# ev_charging_station_data_cleaned.csv
+# Large datasets - exclude from Git due to size limits
+*.csv
+ev_charging_station_data.csv
+ev_charging_station_data_cleaned.csv
 
 # Keep small sample files
 !sample_data.csv
