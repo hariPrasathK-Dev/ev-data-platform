@@ -17,29 +17,95 @@ A comprehensive big data analytics system for analyzing EV charging station avai
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ System Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    Frontend (SvelteKit)                  │
-│              http://localhost:5173                       │
-│  - Dashboard  - HDFS Browser  - MapReduce  - Hive UI   │
-└────────────────────┬────────────────────────────────────┘
-                     │
-                     │ REST API
-                     ▼
-┌─────────────────────────────────────────────────────────┐
-│                Backend API (FastAPI)                     │
-│              http://localhost:8000                       │
-│    - HDFS Service  - MapReduce Service  - Hive Service  │
-└─────────┬───────────────┬──────────────┬────────────────┘
-          │               │              │
-          ▼               ▼              ▼
-    ┌─────────┐    ┌──────────┐   ┌──────────┐
-    │  HDFS   │    │   YARN   │   │   Hive   │
-    │  :9000  │    │  :8088   │   │  :10000  │
-    └─────────┘    └──────────┘   └──────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                         DATA SOURCE                              │
+│          EV Charging Station Dataset (323 MB, 1.3M records)      │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                             ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                   HADOOP DISTRIBUTED FILE SYSTEM (HDFS)          │
+│                          Port: 9000                              │
+│  ┌────────────┐         ┌──────────────────────────────────┐     │
+│  │  NameNode  │───────▶│  DataNode (Block Storage)        │     │
+│  │ (Metadata) │         │  - Block Size: 128 MB            │     │
+│  └────────────┘         │  - Replication Factor: 1         │     │
+│                         └──────────────────────────────────┘     │
+│  Storage Location: /input/ev_charging_station_data_cleaned.csv   │
+└────────────────────────────┬─────────────────────────────────────┘
+                             │
+                ┌────────────┴────────────┐
+                │                         │
+                ▼                         ▼
+┌───────────────────────────┐  ┌──────────────────────────────┐
+│    HADOOP MAPREDUCE       │  │      APACHE HIVE             │
+│    (Batch Processing)     │  │   (Data Warehousing)         │
+│                           │  │                              │
+│  ┌─────────────────────┐  │  │  ┌────────────────────────┐  │
+│  │   YARN Resource     │  │  │  │   Hive Metastore       │  │
+│  │   Manager :8088     │  │  │  │   (Derby DB)           │  │
+│  └──────────┬──────────┘  │  │  └───────────┬────────────┘  │
+│             │             │  │              │               │
+│  ┌──────────▼──────────┐  │  │  ┌───────────▼────────────┐  │
+│  │   Node Manager      │  │  │  │   HiveQL Query         │  │
+│  │   (Task Executor)   │  │  │  │   Engine               │  │
+│  └──────────┬──────────┘  │  │  └───────────┬────────────┘  │
+│             │             │  │              │               │
+│  ┌──────────▼──────────┐  │  │  ┌───────────▼────────────┐  │
+│  │   Map Tasks         │  │  │  │   External Table:      │  │
+│  │   - Data Parsing    │  │  │  │   ev_charging_stations │  │
+│  │   - Filtering       │  │  │  │   (1,317,750 rows)     │  │
+│  └─────────────────────┘  │  │  └────────────────────────┘  │
+│                           │  │                              │
+│  ┌─────────────────────┐  │  │  Analytical Queries:         │
+│  │   Reduce Tasks      │  │  │  - Aggregations (15+)        │
+│  │   - Aggregation     │  │  │  - GROUP BY, HAVING          │
+│  │   - Sorting         │  │  │  - JOIN operations           │
+│  └─────────────────────┘  │  │  - Statistical functions     │
+│                           │  │                              │
+│  Programs Implemented:    │  └──────────────────────────────┘
+│  1. Station Utilization   │
+│  2. Weather Impact        │
+│  3. Station Reliability   │
+└───────────────────────────┘
+
+                OUTPUT LAYER
+┌──────────────────────┐        ┌─────────────────────────┐
+│  MapReduce Results   │        │   Hive Query Results    │
+│  /output/            │        │   Console Output        │
+│  - utilization/*     │        │   - Tabular format      │
+│  - weather/*         │        │   - Real-time results   │
+│  - reliability/*     │        │                         │
+└──────────────────────┘        └─────────────────────────┘
 ```
+
+### Architecture Components:
+
+**1. HDFS (Storage Layer)**
+- Distributed file system for storing large datasets
+- NameNode: Manages file system namespace and metadata
+- DataNode: Stores actual data blocks
+- Fault-tolerant with configurable replication
+
+**2. YARN (Resource Management)**
+- ResourceManager: Allocates cluster resources
+- NodeManager: Manages resources on individual nodes
+- Coordinates MapReduce job execution
+
+**3. MapReduce (Processing Engine)**
+- Distributed parallel processing framework
+- Map phase: Filters and transforms data
+- Reduce phase: Aggregates results
+- Three custom Java programs implemented
+
+**4. Hive (Query Interface)**
+- SQL-like interface (HiveQL) for big data
+- Metastore: Stores table schemas and metadata
+- Translates SQL queries to MapReduce jobs
+- Suitable for ad-hoc analysis and reporting
 
 ---
 
