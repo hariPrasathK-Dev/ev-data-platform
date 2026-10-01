@@ -7,7 +7,7 @@ A comprehensive big data analytics system for analyzing EV charging station avai
 
 ---
 
-## 📊 Project Overview
+## Project Overview
 
 - **Dataset:** 1,317,750 records (323 MB)
 - **Time Period:** July - December 2025
@@ -109,7 +109,7 @@ A comprehensive big data analytics system for analyzing EV charging station avai
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Hadoop 3.3.1
@@ -163,7 +163,7 @@ npm run dev
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ev-charging-station-availability-analytics/
@@ -203,7 +203,7 @@ ev-charging-station-availability-analytics/
 
 ---
 
-## 🔧 MapReduce Programs
+## MapReduce Programs
 
 ### Program 1: Station Utilization Analysis
 Analyzes charging station utilization patterns by network and hour.
@@ -257,7 +257,7 @@ hdfs dfs -cat /output/reliability/part-r-00000 | head -20
 
 ---
 
-## 🗄️ Hive Queries
+## Hive Queries
 
 ### Sample Queries
 
@@ -300,7 +300,7 @@ hive -f queries.hql
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
 ### Frontend Dashboard
 - Real-time system health monitoring
@@ -325,7 +325,7 @@ hive -f queries.hql
 
 ---
 
-## 📈 Performance Metrics
+## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
@@ -339,7 +339,7 @@ hive -f queries.hql
 
 ---
 
-## 🎓 Demo Commands for Presentation
+## Demo Commands for Presentation
 
 ### Show HDFS Data
 ```bash
@@ -366,7 +366,7 @@ hive -e "SELECT weather_condition, AVG(utilization_rate) AS avg_util FROM ev_cha
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### HDFS Safe Mode
 ```bash
@@ -402,7 +402,7 @@ tail -f hadoop-hduser-namenode-*.log
 
 ---
 
-## 📊 Dataset Schema
+## Dataset Schema
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -427,15 +427,14 @@ tail -f hadoop-hduser-namenode-*.log
 
 ---
 
-## 🤝 Team Information
+## Team Information
 
-**Course:** 23CSE352 Big Data Analytics  
-**Project Type:** Review 1  
+**Course:** Big Data Analytics    
 **Technology Stack:** Hadoop 3.3.1, Hive 3.1.3, FastAPI, SvelteKit, Python, Java
 
 ---
 
-## 📝 Technical Details
+## Technical Details
 
 ### Technologies Used
 - **Big Data:** Hadoop MapReduce, Apache Hive, HDFS, YARN
@@ -457,7 +456,7 @@ tail -f hadoop-hduser-namenode-*.log
 
 ---
 
-## 🎯 Project Objectives Achieved
+## Project Objectives Achieved
 
 - ✅ Data preprocessing and cleaning (1.3M+ records)
 - ✅ HDFS distributed storage implementation
@@ -470,7 +469,7 @@ tail -f hadoop-hduser-namenode-*.log
 
 ---
 
-## 📚 References
+## References
 
 - [Apache Hadoop Documentation](https://hadoop.apache.org/docs/stable/)
 - [Apache Hive Documentation](https://hive.apache.org/)
@@ -478,6 +477,3 @@ tail -f hadoop-hduser-namenode-*.log
 - [SvelteKit Documentation](https://kit.svelte.dev/)
 
 ---
-
-**Project Status:** ✅ Complete and Operational  
-**Last Updated:** August 12, 2026
