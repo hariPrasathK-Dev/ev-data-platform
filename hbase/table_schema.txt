@@ -1,0 +1,213 @@
+================================================================================
+HBase Table Schema Design for EV Charging Station Availability Analytics
+================================================================================
+
+TABLE NAME: ev_charging_stations
+
+ROW KEY DESIGN:
+--------------
+Format: {station_id}#{reverse_timestamp}
+Example: EV00001#9223370511254775807
+
+Components:
+  1. station_id: 7-character station identifier (EV00001 - EV00150)
+  2. #: Delimiter character
+  3. reverse_timestamp: Long.MAX_VALUE - epoch_milliseconds
+
+Rationale:
+  - Station co-location: All records for same station stored together
+  - Reverse timestamp: Recent data appears first (SCAN returns latest first)
+  - Efficient time-range queries within station
+  - Load distribution: 150 unique station prefixes
+  - Lexicographic sorting: Natural ordering by station, then time
+
+================================================================================
+COLUMN FAMILIES:
+================================================================================
+
+1. cf_station (Station Information - Relatively Static)
+   ----------------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   name                   | String    | Station name (e.g., "ChargePoint - Los Angeles #1")
+   network                | String    | Charging network operator (Tesla, ChargePoint, EVgo, etc.)
+   city                   | String    | City location (Los Angeles, San Francisco, etc.)
+   state                  | String    | State abbreviation (CA, TX, NY, etc.)
+   latitude               | Double    | Geographic latitude
+   longitude              | Double    | Geographic longitude
+   location_type          | String    | Venue type (Highway, Urban, Shopping, Workplace, etc.)
+   charger_type           | String    | Technology (Level 2, DC Fast Charge, Tesla DC Fast, Hyper-Fast)
+   power_kw               | Double    | Power output in kilowatts (7.2 - 350 kW)
+   amenities              | String    | Comma-separated nearby facilities
+
+   Properties:
+   - VERSIONS: 1 (static data, rarely changes)
+   - COMPRESSION: SNAPPY (moderate compression for mixed data types)
+   - BLOOMFILTER: ROW (optimize row-level lookups)
+
+
+2. cf_metrics (Availability Metrics - High Frequency Updates)
+   -----------------------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   ports_total            | Integer   | Total number of charging ports (2-24)
+   ports_available        | Integer   | Currently free ports
+   ports_occupied         | Integer   | Ports currently in use
+   ports_out_of_service   | Integer   | Temporarily unavailable ports
+   utilization_rate       | Double    | Percentage occupied (0.0 - 1.0)
+   station_status         | String    | operational/partial_outage/under_maintenance/offline
+   wait_time_mins         | Integer   | Estimated wait time in minutes
+   avg_session_mins       | Integer   | Average charging session duration
+
+   Properties:
+   - VERSIONS: 1 (time-series via row key, not cell versions)
+   - COMPRESSION: SNAPPY (good for numeric data)
+   - BLOOMFILTER: ROW
+   - TTL: Optional (e.g., 63072000 seconds = 2 years)
+
+
+3. cf_pricing (Pricing Information - Dynamic)
+   -------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   current_price          | Double    | Real-time charging price (USD)
+   pricing_type           | String    | Billing model (per_kwh/per_minute/free)
+
+   Properties:
+   - VERSIONS: 1
+   - COMPRESSION: SNAPPY
+   - BLOOMFILTER: ROW
+
+
+4. cf_weather (Weather Conditions - Environmental Data)
+   -----------------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   temperature_f          | Double    | Ambient temperature in Fahrenheit
+   precipitation_mm       | Double    | Rainfall/precipitation in millimeters
+   weather_condition      | String    | clear/partly_cloudy/cloudy/light_rain/heavy_rain/extreme_heat/freezing
+
+   Properties:
+   - VERSIONS: 1
+   - COMPRESSION: SNAPPY
+   - BLOOMFILTER: ROW
+
+
+5. cf_context (External Context - Influencing Factors)
+   ---------------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   gas_price              | Double    | Local gasoline price per gallon (USD)
+   traffic_index          | Integer   | Traffic congestion score (1-10)
+   local_event            | String    | Nearby events (concert/sports_game/festival/conference/none)
+
+   Properties:
+   - VERSIONS: 1
+   - COMPRESSION: SNAPPY
+   - BLOOMFILTER: ROW
+
+
+6. cf_temporal (Time Features - Pre-computed Temporal Attributes)
+   ---------------------------------------------------------------
+   Qualifier Name         | Data Type | Description
+   -----------------------|-----------|------------------------------------
+   timestamp              | String    | Original timestamp (YYYY-MM-DD HH:MM:SS)
+   hour                   | Integer   | Hour of day (0-23)
+   day_of_week            | Integer   | Day of week (0=Monday, 6=Sunday)
+   month                  | Integer   | Month number (7-12)
+   is_weekend             | String    | "true" or "false"
+   is_peak_hour           | String    | "true" or "false" (7-9 AM, 5-8 PM)
+
+   Properties:
+   - VERSIONS: 1
+   - COMPRESSION: SNAPPY
+   - BLOOMFILTER: ROW
+
+================================================================================
+SAMPLE ROW STRUCTURE:
+================================================================================
+
+Row Key: EV00001#9223370511254775807
+
+cf_station:name         = "ChargePoint - Los Angeles #1"
+cf_station:network      = "ChargePoint"
+cf_station:city         = "Los Angeles"
+cf_station:state        = "CA"
+cf_station:latitude     = "34.012362"
+cf_station:longitude    = "-118.114786"
+cf_station:location_type = "Shopping Center"
+cf_station:charger_type = "DC Fast Charge"
+cf_station:power_kw     = "19.2"
+cf_station:amenities    = "Hotel"
+
+cf_metrics:ports_total  = "6"
+cf_metrics:ports_available = "1"
+cf_metrics:ports_occupied = "0"
+cf_metrics:ports_out_of_service = "5"
+cf_metrics:utilization_rate = "0.131"
+cf_metrics:station_status = "under_maintenance"
+cf_metrics:wait_time_mins = "0"
+cf_metrics:avg_session_mins = "33"
+
+cf_pricing:current_price = "0.24"
+cf_pricing:pricing_type = "per_kwh"
+
+cf_weather:temperature_f = "98.6"
+cf_weather:precipitation_mm = "0.0"
+cf_weather:weather_condition = "extreme_heat"
+
+cf_context:gas_price    = "5.08"
+cf_context:traffic_index = "2"
+cf_context:local_event  = "none"
+
+cf_temporal:timestamp   = "2025-07-01 00:00:00"
+cf_temporal:hour        = "0"
+cf_temporal:day_of_week = "1"
+cf_temporal:month       = "7"
+cf_temporal:is_weekend  = "false"
+cf_temporal:is_peak_hour = "false"
+
+================================================================================
+QUERY PATTERNS SUPPORTED:
+================================================================================
+
+1. Get Latest Station Status:
+   scan 'ev_charging_stations', {STARTROW => 'EV00001#', LIMIT => 1}
+
+2. Get Specific Station at Specific Time:
+   get 'ev_charging_stations', 'EV00001#9223370511254775807'
+
+3. Time-Range Query for a Station (e.g., all July data):
+   scan 'ev_charging_stations', {STARTROW => 'EV00001#rev_end', STOPROW => 'EV00001#rev_start'}
+
+4. Scan All Stations with Filter:
+   scan 'ev_charging_stations', {FILTER => "SingleColumnValueFilter('cf_metrics','utilization_rate',>=,'binary:0.8')"}
+
+5. Count Total Records:
+   count 'ev_charging_stations'
+
+6. Get Station Info Only (specific column family):
+   scan 'ev_charging_stations', {COLUMNS => 'cf_station', LIMIT => 10}
+
+================================================================================
+PERFORMANCE OPTIMIZATIONS:
+================================================================================
+
+1. Compression: SNAPPY for all column families (balance CPU vs storage)
+2. Bloom Filters: ROW-level bloom filters for faster row existence checks
+3. Block Cache: Recent data (latest timestamps) benefit from caching
+4. Versions: Only 1 version kept (time-series via row key, not cell versions)
+5. Pre-splitting: Can pre-split table by station_id ranges to avoid hotspots
+6. Batch Operations: Use bulk loading for initial data import
+
+================================================================================
+SCALABILITY CONSIDERATIONS:
+================================================================================
+
+- Row Key Distribution: 150 unique station prefixes provide good distribution
+- Region Sizing: Configure regions based on data volume
+- TTL Policies: Optional TTL for old data (e.g., keep 2 years)
+- Horizontal Scaling: Add region servers as data grows
+- Future Growth: Schema easily accommodates new stations and attributes
+
+================================================================================
