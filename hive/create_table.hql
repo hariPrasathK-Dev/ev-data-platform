@@ -4,7 +4,7 @@
 -- 
 -- Purpose: Create external table for EV charging dataset in HDFS
 -- Dataset: 1.3M+ records, 33 columns, 323 MB
--- Location: /home/hduser/Hive_Assignment/ev_charging_station_data_cleaned.csv
+-- Location: /home/hduser/ev-charging-station-availability-analytics/ev_charging_station_data_cleaned.csv
 --
 -- ============================================================================
 
@@ -72,7 +72,7 @@ COMMENT 'EV Charging Station Availability Analytics Dataset - 1.3M+ records cove
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY ','
 STORED AS TEXTFILE
-LOCATION '/home/hduser/Hive_Assignment/'
+LOCATION '/home/hduser/ev-charging-station-availability-analytics/'
 TBLPROPERTIES (
     'skip.header.line.count'='1',
     'creator'='hduser',
