@@ -18,9 +18,14 @@
 
 	const navItems = [
 		{ path: '/', label: 'Dashboard', icon: '' },
-		{ path: '/hdfs', label: 'HDFS Browser', icon: '' },
+		{ path: '/stations', label: 'Stations', icon: '' },
+		{ path: '/analytics', label: 'Analytics', icon: '' },
+		{ path: '/spark', label: 'Spark RDD', icon: '' },
+		{ path: '/ml-model', label: 'ML Model', icon: '' },
+		{ path: '/predict', label: 'Predict', icon: '' },
+		{ path: '/hdfs', label: 'HDFS', icon: '' },
 		{ path: '/mapreduce', label: 'MapReduce', icon: '' },
-		{ path: '/hive', label: 'Hive Queries', icon: '' }
+		{ path: '/hive', label: 'Hive', icon: '' }
 	];
 </script>
 
@@ -57,6 +62,7 @@
 							class:active={$page.url.pathname === item.path}
 							on:click={() => navOpen = false}
 						>
+							<span class="icon">{item.icon}</span>
 							<span class="label">{item.label}</span>
 						</a>
 					</li>
@@ -83,8 +89,8 @@
 		margin: 0;
 		padding: 0;
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-		background: #f5f5f5;
-		color: #333;
+		background: #0B0D0C;
+		color: #F3F6F4;
 	}
 
 	:global(*) {
@@ -98,10 +104,10 @@
 	}
 
 	header {
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		color: white;
+		background: #101311;
+		color: #F3F6F4;
 		padding: 0;
-		box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		border-bottom: 1px solid #292F2B;
 		position: sticky;
 		top: 0;
 		z-index: 100;
@@ -169,8 +175,8 @@
 
 	.sidebar {
 		width: 250px;
-		background: white;
-		border-right: 1px solid #e5e7eb;
+		background: #101311;
+		border-right: 1px solid #292F2B;
 		display: flex;
 		flex-direction: column;
 		overflow-y: auto;
@@ -178,7 +184,7 @@
 
 	.nav-header {
 		padding: 1.5rem 1rem 1rem;
-		border-bottom: 1px solid #e5e7eb;
+		border-bottom: 1px solid #292F2B;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -187,7 +193,7 @@
 	.nav-header h2 {
 		margin: 0;
 		font-size: 1.1rem;
-		color: #6b7280;
+		color: #929B95;
 	}
 
 	.close-btn {
@@ -216,44 +222,45 @@
 		gap: 0.75rem;
 		padding: 0.875rem 1.5rem;
 		text-decoration: none;
-		color: #4b5563;
+		color: #929B95;
 		transition: all 0.2s;
+		border-left: 3px solid transparent;
 	}
 
 	.sidebar a:hover {
-		background: #f3f4f6;
-		color: #667eea;
+		background: #151816;
+		color: #F3F6F4;
 	}
 
 	.sidebar a.active {
-		background: #ede9fe;
-		color: #667eea;
+		background: #151816;
+		color: #35E6A1;
 		font-weight: 600;
-		border-left: 3px solid #667eea;
+		border-left: 3px solid #35E6A1;
 	}
 
 	.sidebar a .icon {
-		display: none;
+		font-size: 1.25rem;
 	}
 
 	.sidebar-footer {
 		padding: 1rem;
-		border-top: 1px solid #e5e7eb;
-		background: #f9fafb;
+		border-top: 1px solid #292F2B;
+		background: #0B0D0C;
 	}
 
 	.project-info {
 		margin: 0;
 		font-size: 0.75rem;
 		line-height: 1.5;
-		color: #6b7280;
+		color: #929B95;
 	}
 
 	main {
 		flex: 1;
 		overflow-y: auto;
 		padding: 2rem;
-		background: #f5f5f5;
+		background: #0B0D0C;
 	}
 
 	/* Mobile responsive */
