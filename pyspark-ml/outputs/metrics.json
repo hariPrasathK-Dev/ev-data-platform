@@ -1,0 +1,56 @@
+{
+  "model_type": "RandomForestClassifier",
+  "training_date": "2026-10-15T18:55:52.935983",
+  "training_time_seconds": 253.855279,
+  "dataset_size": {
+    "total_records": 1317750,
+    "train_records": 334569,
+    "test_records": 983181
+  },
+  "class_distribution": {
+    "available": 84382,
+    "not_available": 1233368
+  },
+  "features": {
+    "count": 19,
+    "numeric": [
+      "ports_total",
+      "power_output_kw",
+      "hour_of_day",
+      "day_of_week",
+      "month",
+      "is_weekend",
+      "is_peak_hour",
+      "temperature_f",
+      "precipitation_mm",
+      "traffic_congestion_index",
+      "current_price",
+      "gas_price_per_gallon"
+    ],
+    "categorical": [
+      "network",
+      "city",
+      "state",
+      "location_type",
+      "charger_type",
+      "pricing_type",
+      "weather_condition"
+    ]
+  },
+  "hyperparameters": {
+    "num_trees": 100,
+    "max_depth": 10,
+    "min_instances_per_node": 5
+  },
+  "evaluation": {
+    "roc_auc": 0.515,
+    "accuracy": 0.9372,
+    "precision": 0.8784,
+    "recall": 0.9372,
+    "f1_score": 0.9069
+  },
+  "confusion_matrix": {
+    "actual_1_pred_1": 921479,
+    "actual_0_pred_1": 61702
+  }
+}

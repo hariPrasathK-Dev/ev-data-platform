@@ -1,0 +1,21 @@
+{
+  "city_indexed": 0.15850845923427678,
+  "ports_total": 0.1211743891420085,
+  "state_indexed": 0.10263486787272603,
+  "current_price": 0.08084255783628182,
+  "network_indexed": 0.062083751742372247,
+  "gas_price_per_gallon": 0.060369247476402765,
+  "temperature_f": 0.05947692469102625,
+  "power_output_kw": 0.05768944910687058,
+  "hour_of_day": 0.04474628083695635,
+  "charger_type_indexed": 0.04451114072130578,
+  "location_type_indexed": 0.04377485833563546,
+  "traffic_congestion_index": 0.03638180771759259,
+  "day_of_week": 0.03296044888191731,
+  "precipitation_mm": 0.030303164706502638,
+  "month": 0.023680483013015157,
+  "weather_condition_indexed": 0.01966620017767913,
+  "pricing_type_indexed": 0.009717133406048196,
+  "is_weekend": 0.007133163819858038,
+  "is_peak_hour": 0.004345671281524477
+}
