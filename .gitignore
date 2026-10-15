@@ -167,6 +167,30 @@ job*_results.txt
 # System metadata
 .Trash-*/
 
+# Test and temporary scripts
+test_*.sh
+test_*.py
+test_*.json
+start_*.sh
+
+# PySpark ML outputs (keep structure, ignore cached data)
+pyspark-ml/venv/
+pyspark-ml/test_*.py
+pyspark-ml/*.pyc
+
+# Spark Scala build artifacts
+spark-scala/*.class
+spark-scala/lib/
+spark-scala/project/
+spark-scala/target/
+
+# HBase temporary files
+hbase/*.class
+hbase/sample_puts.hql
+
+# Processed data outputs (large files)
+data/processed/
+
 # ============================================================================
 # Keep Important Files
 # ============================================================================
