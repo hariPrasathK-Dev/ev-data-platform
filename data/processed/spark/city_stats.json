@@ -1,0 +1,17 @@
+[
+  {"city": "San Francisco", "avg_utilization": 0.5479678656800959, "observations": 87850},
+  {"city": "Seattle", "avg_utilization": 0.5197840978941087, "observations": 87850},
+  {"city": "Los Angeles", "avg_utilization": 0.5032385379118236, "observations": 79065},
+  {"city": "San Diego", "avg_utilization": 0.4712751912982885, "observations": 79065},
+  {"city": "Boston", "avg_utilization": 0.45428998924934494, "observations": 79065},
+  {"city": "Austin", "avg_utilization": 0.44562033769683296, "observations": 79065},
+  {"city": "Las Vegas", "avg_utilization": 0.4217825713020911, "observations": 79065},
+  {"city": "Denver", "avg_utilization": 0.4135170176437081, "observations": 87850},
+  {"city": "Portland", "avg_utilization": 0.38773319782095744, "observations": 61495},
+  {"city": "Chicago", "avg_utilization": 0.3776202959590218, "observations": 87850},
+  {"city": "New York", "avg_utilization": 0.3677009675583362, "observations": 79065},
+  {"city": "Minneapolis", "avg_utilization": 0.3634912350597633, "observations": 87850},
+  {"city": "Phoenix", "avg_utilization": 0.35945343704547594, "observations": 158130},
+  {"city": "Miami", "avg_utilization": 0.3578198292544098, "observations": 87850},
+  {"city": "Atlanta", "avg_utilization": 0.31487708387230146, "observations": 96635}
+]

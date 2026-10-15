@@ -1,0 +1,7 @@
+{
+  "total_records": 1317750,
+  "operational_records": 1162680,
+  "avg_utilization": 0.416,
+  "partitions": 11,
+  "cached": true
+}

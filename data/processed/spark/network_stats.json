@@ -1,0 +1,10 @@
+[
+  {"network": "Volta", "avg_utilization": 0.43573315568892457, "observations": 193270},
+  {"network": "Blink", "avg_utilization": 0.4302531858958636, "observations": 184485},
+  {"network": "Tesla Supercharger", "avg_utilization": 0.424425470905493, "observations": 184485},
+  {"network": "EVgo", "avg_utilization": 0.4221030022766008, "observations": 70280},
+  {"network": "Electrify America", "avg_utilization": 0.411650422121028, "observations": 210840},
+  {"network": "Shell Recharge", "avg_utilization": 0.404067788709106, "observations": 184485},
+  {"network": "ChargePoint", "avg_utilization": 0.40222256520137756, "observations": 149345},
+  {"network": "EVCS", "avg_utilization": 0.39444321286283046, "observations": 140560}
+]
